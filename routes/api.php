@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\{ImpersonateController, UserController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/impersonate/{user}', [ImpersonateController::class, 'impersonate']);
+    Route::post('/stop-impersonating/{user}', [ImpersonateController::class, 'stopImpersonating']);
 });
